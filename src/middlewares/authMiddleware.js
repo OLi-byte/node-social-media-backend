@@ -9,7 +9,9 @@ function verifyToken(req, res, next) {
 
   try {
     const decoded = JWT.verify(token, process.env.JWT_SECRET);
+
     req.userId = decoded.userId;
+
     next();
   } catch (error) {
     console.error(error.message);
