@@ -16,7 +16,7 @@ app.use(morgan("common"));
 app.use(helmet());
 
 // Routes
-app.use("/api/v1/users", verifyToken, userRouter);
+app.use("/api/v1/users", userRouter);
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/posts", verifyToken, postRouter);
 app.use("/api/v1/likes", verifyToken, likeRouter);
