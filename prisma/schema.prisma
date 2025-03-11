@@ -26,8 +26,8 @@ model User {
   posts               Post[]
   likes               Like[]
   comments            Comment[]
-  friends             Friendship[] @relation("UserFriendsAsUser")
-  friendOf            Friendship[] @relation("UserFriendsAsFriend")
+  friendsOf           Friendship[] @relation("friendsOf")
+  friends             Friendship[] @relation("friends")
 
   @@map("users")
 }
@@ -69,16 +69,14 @@ model Comment {
 }
 
 model Friendship {
-  id       Int    @id @default(autoincrement())
-  userId   Int
-  friendId Int
-  status   String
-  user     User   @relation("UserFriendsAsUser", fields: [userId], references: [id])
-  friend   User   @relation("UserFriendsAsFriend", fields: [friendId], references: [id])
+  friendOfId Int
+  friendId   Int
+  friendOf   User     @relation("friendsOf", fields: [friendOfId], references: [id])
+  friend     User     @relation("friends", fields: [friendId], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
-  @@unique([userId, friendId])
-  @@unique([friendId, userId])
-  @@index([userId, friendId])
-  @@index([friendId, userId])
-  @@map("friendships")
+  @@id([friendOfId, friendId])
+  @@unique([friendOfId, friendId])
+  @@map("friends")
 }
