@@ -7,6 +7,7 @@ import postRouter from "./routes/postRoutes.js";
 import likeRouter from "./routes/likeRoutes.js";
 import commentRouter from "./routes/commentRoutes.js";
 import friendRequestRouter from "./routes/friendRequestRoutes.js";
+import friendshipRouter from "./routes/friendshipRoutes.js";
 import verifyToken from "./middlewares/authMiddleware.js";
 
 const app = express();
@@ -23,5 +24,6 @@ app.use("/api/v1/posts", verifyToken, postRouter);
 app.use("/api/v1/likes", verifyToken, likeRouter);
 app.use("/api/v1/comments", verifyToken, commentRouter);
 app.use("/api/v1/friendRequests", verifyToken, friendRequestRouter);
+app.use("/api/v1/friendships", verifyToken, friendshipRouter);
 
 export default app;
