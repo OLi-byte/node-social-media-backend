@@ -9,6 +9,7 @@ import commentRouter from "./routes/commentRoutes.js";
 import friendRequestRouter from "./routes/friendRequestRoutes.js";
 import friendshipRouter from "./routes/friendshipRoutes.js";
 import verifyToken from "./middlewares/authMiddleware.js";
+import statsRouter from "./routes/statsRoutes.js";
 
 const app = express();
 
@@ -22,8 +23,9 @@ app.use("/api/v1/users", userRouter);
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/posts", verifyToken, postRouter);
 app.use("/api/v1/likes", verifyToken, likeRouter);
+app.use("/api/v1/stats", verifyToken, statsRouter);
 app.use("/api/v1/comments", verifyToken, commentRouter);
-app.use("/api/v1/friendRequests", verifyToken, friendRequestRouter);
 app.use("/api/v1/friendships", verifyToken, friendshipRouter);
+app.use("/api/v1/friendRequests", verifyToken, friendRequestRouter);
 
 export default app;

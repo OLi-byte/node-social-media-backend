@@ -32,8 +32,23 @@ model User {
   friendRequestsSent     FriendRequest[] @relation("SentRequests")
   relatedNotifications   Notification[]  @relation("relatedUser")
   friendRequestsReceived FriendRequest[] @relation("ReceivedRequests")
+  Stats                  Stats?
 
   @@map("users")
+}
+
+model Stats {
+  id        Int      @id @default(autoincrement())
+  cool      Int      @default(1)
+  trustable Int      @default(1)
+  sexy      Int      @default(1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  emoji     String   @default("🙂")
+  userId    Int      @unique
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@map("stats")
 }
 
 model Post {
