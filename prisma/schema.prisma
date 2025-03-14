@@ -26,23 +26,27 @@ model User {
   posts                  Post[]
   likes                  Like[]
   comments               Comment[]
-  friendsOf              Friendship[]    @relation("friendsOf")
   friends                Friendship[]    @relation("friends")
+  friendsOf              Friendship[]    @relation("friendsOf")
+  notifications          Notification[]
   friendRequestsSent     FriendRequest[] @relation("SentRequests")
+  relatedNotifications   Notification[]  @relation("relatedUser")
   friendRequestsReceived FriendRequest[] @relation("ReceivedRequests")
 
   @@map("users")
 }
 
 model Post {
-  id        Int       @id @default(autoincrement())
-  title     String
-  content   String    @db.Text
-  image_url String?
-  userId    Int
-  User      User      @relation(fields: [userId], references: [id])
-  likes     Like[]
-  comments  Comment[]
+  id           Int            @id @default(autoincrement())
+  title        String
+  content      String         @db.Text
+  image_url    String?
+  published    Boolean        @default(false)
+  userId       Int
+  User         User           @relation(fields: [userId], references: [id])
+  likes        Like[]
+  comments     Comment[]
+  notification Notification[]
 
   @@map("posts")
 }
@@ -99,4 +103,25 @@ model Friendship {
 
   @@id([friendOfId, friendId])
   @@map("friends")
+}
+
+model Notification {
+  id            Int              @id @default(autoincrement())
+  userId        Int
+  type          NotificationType
+  relatedPostId Int?
+  relatedUserid Int?
+  message       String?
+  isRead        Boolean          @default(false)
+  createdAt     DateTime         @default(now())
+  relatedPost   Post?            @relation(fields: [relatedPostId], references: [id])
+  relatedUser   User?            @relation("relatedUser", fields: [relatedUserid], references: [id])
+  user          User             @relation(fields: [userId], references: [id])
+}
+
+enum NotificationType {
+  like
+  comment
+  friendship
+  message
 }
